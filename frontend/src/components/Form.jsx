@@ -3,7 +3,11 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
-const Form = () => {
+import "../styles/Form.css"
+
+import LoadingIndicator from "./LoadingIndicator";
+
+const Form = ({route, method}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -11,15 +15,22 @@ const Form = () => {
 
     const name = method === "login" ? "Login" : "Register"; 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
 
         try {
-            const res = api.post(route, {username, password})
+            const res = await api.post(route, {username, password});
+            if(method === "login"){
+                localStorage.setItem(ACCESS_TOKEN, res.data.access);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                navigate("/")
+            }
+            else{
+                navigate("/login");
+            }
         } catch (error) {
             alert(error);
-            
         }
         finally{
             setLoading(false);
@@ -42,11 +53,14 @@ const Form = () => {
             onChange={ (e) => {setPassword(e.target.value)}}
             placeholder="Password"
         />
+        {loading && <LoadingIndicator/>}
         <button className="form-button" type="submit">
             {name}
 
-        </button>
+        </button>   
 
     </form>
 
 }
+
+export default Form
