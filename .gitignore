@@ -28,7 +28,8 @@ celerybeat-schedule
 
 # mypy
 .mypy_cache/
-**/__pycache__/
+**/__pycache__/*
+backend/db.sqlite3
 
 # Jupyter Notebook
 *.ipynb_checkpoints
