@@ -8,6 +8,14 @@ const Bill = ({ bill, onDelete }) => {
   const billingPeriodStart = new Date(bill.period_start);
   const billingPeriodEnd = new Date(bill.period_end);
 
+  const dueDate = new Date(
+    billingPeriodEnd.getFullYear(),
+    billingPeriodEnd.getMonth(),
+    billingPeriodEnd.getDate() + 17
+  );
+
+  console.log(`Due: ${dueDate}`);
+
   return (
     <div className="bill-container w-4/5 mx-auto">
       <div className="grid grid-cols-10">
@@ -74,16 +82,32 @@ const Bill = ({ bill, onDelete }) => {
           </div>
         </div>
 
-        <div className="breakdown-container grid grid-cols-5 col-span-10 auto-rows-[50px] border-2">
-          <p className="font-bold text-lg border-2 pl-2">Account#</p>
-          <p className="font-bold text-lg border-2 pl-2 text-wrap">Meter#</p>
-          <p className="font-bold text-lg border-2 pl-2">Due Date</p>
-          <p className="font-bold text-lg border-2 pl-2">Penalty</p>
-          <p className="font-bold text-lg border-2 pl-2">
-            Amount After Due Date
-          </p>
-          <p className="border-2 pl-2">{bill.account_number}</p>
-          <p className="border-2 pl-2">{formattedDate}</p>
+        <div className="breakdown-container grid grid-cols-4 col-span-10 auto-rows-[50px] border-2">
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg pl-2">Account#</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg pl-2">Due Date</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg pl-2">Penalty</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg pl-2">Amount After Due Date</p>
+          </div>
+
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="pl-2">{bill.account_number}</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="pl-2">{dueDate.toDateString("en-US")}</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="pl-2">{bill.penalty}</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="pl-2">9999</p>
+          </div>
         </div>
       </div>
 
