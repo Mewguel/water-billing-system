@@ -21,6 +21,10 @@ class BillSerializer(serializers.ModelSerializer):
                   "account_holder",
                   "account_number",
                   "customer_address",
+                  "prev_reading",
+                  "current_reading",
+                  "period_start",
+                  "period_end",
                   "created_at",
                   "author",
                   ]

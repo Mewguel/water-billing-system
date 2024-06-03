@@ -1,8 +1,12 @@
 import React from "react";
 import "../styles/Bill.css";
+import { monthNames } from "../constants/Constants";
 
 const Bill = ({ bill, onDelete }) => {
   const formattedDate = new Date(bill.created_at).toLocaleDateString("en-US");
+
+  const billingPeriodStart = new Date(bill.period_start);
+  const billingPeriodEnd = new Date(bill.period_end);
 
   return (
     <div className="bill-container w-4/5 mx-auto">
@@ -17,26 +21,41 @@ const Bill = ({ bill, onDelete }) => {
         </div>
 
         <div className="grid grid-cols-4 col-span-7 auto-rows-[50px] border-2 items-center content-center">
-          <p className="font-bold text-xl border-2 pl-2">Current Reading</p>
-          <p className="font-bold text-xl border-2 pl-2">Previous Reading</p>
-          <p className="font-bold text-xl border-2 pl-2">Consumption</p>
-          <p className="font-bold text-xl border-2 pl-2">Billing Month</p>
+          {/* Headers */}
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-xl pl-2">Current Reading</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-xl pl-2">Previous Reading</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-xl pl-2">Consumption</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-xl pl-2">Billing Month</p>
+          </div>
+          {/* end of Headers */}
 
           <div className="border-2 flex items-center justify-center h-full">
-            <p className="font-semibold text-normal">3307</p>
+            <p className="font-semibold text-normal">{bill.current_reading}</p>
           </div>
           <div className="border-2 flex items-center justify-center h-full">
-            <p className="font-semibold text-normal">3291</p>
+            <p className="font-semibold text-normal">{bill.prev_reading}</p>
           </div>
           <div className="border-2 flex items-center justify-center h-full">
-            <p className="font-semibold text-normal">16</p>
+            <p className="font-semibold text-normal">
+              {bill.current_reading - bill.prev_reading}
+            </p>
           </div>
           <div className="border-2 flex items-center justify-center h-full">
-            <p className="font-semibold text-normal">May</p>
+            <p className="font-semibold text-normal">
+              {monthNames[billingPeriodStart.getMonth()]}
+            </p>
           </div>
         </div>
 
         <div className="breakdown-container grid grid-cols-8 col-span-10 auto-rows-[50px] border-2">
+          {/* Headers */}
           <p className="font-bold text-lg border-2 pl-2">Billing Period</p>
           <p className="font-bold text-lg border-2 pl-2">Water</p>
           <p className="font-bold text-lg border-2 pl-2">Tax</p>
@@ -45,6 +64,14 @@ const Bill = ({ bill, onDelete }) => {
           <p className="font-bold text-lg border-2 pl-2">Arrears</p>
           <p className="font-bold text-lg border-2 pl-2">Over Payment</p>
           <p className="font-bold text-lg border-2 pl-2">Amount Due</p>
+          {/* End of headers */}
+          {/* Grid Data */}
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="text-sm pl-2">
+              {billingPeriodStart.toLocaleDateString("en-US")} -{" "}
+              {billingPeriodEnd.toLocaleDateString("en-US")}
+            </p>
+          </div>
         </div>
 
         <div className="breakdown-container grid grid-cols-5 col-span-10 auto-rows-[50px] border-2">
