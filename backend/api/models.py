@@ -11,6 +11,7 @@ class Bill(models.Model):
     current_reading = models.IntegerField(default=0, blank=True, null=True)
     period_start = models.DateTimeField(default=timezone.now)
     period_end = models.DateTimeField(default=timezone.now)
+    penalty = models.FloatField(default=0.00, blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
