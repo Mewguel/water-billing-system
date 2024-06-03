@@ -17,5 +17,11 @@ class UserSerializer(serializers.ModelSerializer):
 class BillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bill
-        fields = ["id", "title", "content", "created_at", "author"]
+        fields = ["id",  # Billing Statemeng No.
+                  "account_holder",
+                  "account_number",
+                  "customer_address",
+                  "created_at",
+                  "author",
+                  ]
         extra_kwargs = {"author": {"read_only": True}}
