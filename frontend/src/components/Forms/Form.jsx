@@ -1,12 +1,12 @@
 import { useState } from "react";
-import api from "../api";
+import api from "../../api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
 
-import "../styles/Form.css";
-import logo from "../assets/logo.jpg";
+import "../../styles/Form.css";
+import logo from "../../assets/logo.jpg";
 
-import LoadingIndicator from "./LoadingIndicator";
+import LoadingIndicator from "../LoadingIndicator";
 
 const Form = ({ route, method }) => {
   const [username, setUsername] = useState("");
