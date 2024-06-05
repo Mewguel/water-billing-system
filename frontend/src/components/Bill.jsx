@@ -1,10 +1,7 @@
-import React from "react";
 import "../styles/Bill.css";
 import { monthNames, RATE } from "../constants/Constants";
 
 const Bill = ({ bill, onDelete }) => {
-  const formattedDate = new Date(bill.created_at).toLocaleDateString("en-US");
-
   const billingPeriodStart = new Date(bill.period_start);
   const billingPeriodEnd = new Date(bill.period_end);
 
@@ -20,6 +17,8 @@ const Bill = ({ bill, onDelete }) => {
   const SCF = 0.0; // TODO:: SCF
   const seniorDiscount = 0.0; // TODO:: Senior Disc
   const arrears = 0.0; //TODO:: total of all previous bills
+  const overPayment = 0.0; //TODO:: overpayment
+  const amountDue = 0.0; //TODO:: amountDue
 
   return (
     <div className="bill-container w-4/5 mx-auto">
@@ -112,9 +111,15 @@ const Bill = ({ bill, onDelete }) => {
           <div className="border-2 flex items-center justify-center h-full">
             {seniorDiscount}
           </div>
-          <div className="border-2 flex items-center justify-center h-full"></div>
-          <div className="border-2 flex items-center justify-center h-full"></div>
-          <div className="border-2 flex items-center justify-center h-full"></div>
+          <div className="border-2 flex items-center justify-center h-full">
+            {arrears}
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            {overPayment}
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            {amountDue}
+          </div>
         </div>
 
         <div className="breakdown-container grid grid-cols-4 col-span-10 auto-rows-[50px] border-2">
