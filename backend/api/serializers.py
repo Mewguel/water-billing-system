@@ -25,6 +25,7 @@ class BillSerializer(serializers.ModelSerializer):
                   "current_reading",
                   "period_start",
                   "period_end",
+                  "penalty",
                   "created_at",
                   "author",
                   ]

@@ -14,6 +14,7 @@ const Home = () => {
   const [current_reading, setCurrentReading] = useState(0);
   const [period_start, setPeriodStart] = useState(Date.now());
   const [period_end, setPeriodEnd] = useState(Date.now());
+  const [penalty, setPenalty] = useState(0.0);
 
   useEffect(() => {
     getBills();
@@ -57,6 +58,7 @@ const Home = () => {
         current_reading,
         period_start,
         period_end,
+        penalty,
       })
       .then((res) => {
         if (res.status == 201) {
@@ -145,6 +147,16 @@ const Home = () => {
           value={period_end}
           type="date"
           onChange={(e) => setPeriodEnd(e.target.value)}
+          required
+        ></input>
+        <label htmlFor="penalty">Penalty: </label>
+        <br />
+        <input
+          id="penalty"
+          name="penalty"
+          value={penalty}
+          type="number"
+          onChange={(e) => setPenalty(e.target.value)}
           required
         ></input>
 

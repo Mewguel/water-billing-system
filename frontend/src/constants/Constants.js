@@ -12,3 +12,5 @@ export const monthNames = [
   "November",
   "December",
 ];
+
+export const RATE = 28.4;
