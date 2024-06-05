@@ -58,6 +58,7 @@ const Home = () => {
         current_reading,
         period_start,
         period_end,
+        penalty,
       })
       .then((res) => {
         if (res.status == 201) {
@@ -154,7 +155,7 @@ const Home = () => {
           id="penalty"
           name="penalty"
           value={penalty}
-          type="date"
+          type="number"
           onChange={(e) => setPenalty(e.target.value)}
           required
         ></input>

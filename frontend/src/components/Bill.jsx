@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/Bill.css";
-import { monthNames } from "../constants/Constants";
+import { monthNames, RATE } from "../constants/Constants";
 
 const Bill = ({ bill, onDelete }) => {
   const formattedDate = new Date(bill.created_at).toLocaleDateString("en-US");
@@ -14,7 +14,12 @@ const Bill = ({ bill, onDelete }) => {
     billingPeriodEnd.getDate() + 17
   );
 
-  console.log(`Due: ${dueDate}`);
+  const consumption = bill.current_reading - bill.prev_reading;
+  const waterAmount = RATE * consumption;
+  const waterTax = waterAmount * 0.02;
+  const SCF = 0.0; // TODO:: SCF
+  const seniorDiscount = 0.0; // TODO:: Senior Disc
+  const arrears = 0.0; //TODO:: total of all previous bills
 
   return (
     <div className="bill-container w-4/5 mx-auto">
@@ -51,9 +56,7 @@ const Bill = ({ bill, onDelete }) => {
             <p className="font-semibold text-normal">{bill.prev_reading}</p>
           </div>
           <div className="border-2 flex items-center justify-center h-full">
-            <p className="font-semibold text-normal">
-              {bill.current_reading - bill.prev_reading}
-            </p>
+            <p className="font-semibold text-normal">{consumption}</p>
           </div>
           <div className="border-2 flex items-center justify-center h-full">
             <p className="font-semibold text-normal">
@@ -64,22 +67,54 @@ const Bill = ({ bill, onDelete }) => {
 
         <div className="breakdown-container grid grid-cols-8 col-span-10 auto-rows-[50px] border-2">
           {/* Headers */}
-          <p className="font-bold text-lg border-2 pl-2">Billing Period</p>
-          <p className="font-bold text-lg border-2 pl-2">Water</p>
-          <p className="font-bold text-lg border-2 pl-2">Tax</p>
-          <p className="font-bold text-lg border-2 pl-2">SCF</p>
-          <p className="font-bold border-2 pl-2 text-wrap">Senior Discount</p>
-          <p className="font-bold text-lg border-2 pl-2">Arrears</p>
-          <p className="font-bold text-lg border-2 pl-2">Over Payment</p>
-          <p className="font-bold text-lg border-2 pl-2">Amount Due</p>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="flex font-bold text-lg px-2">Billing Period</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg px-2">Water</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg px-2">Tax</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lgpx-2">SCF</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold px-2 text-wrap">Senior Discount</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg px-2">Arrears</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg px-2">Over Payment</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-bold text-lg px-2">Amount Due</p>
+          </div>
+
           {/* End of headers */}
           {/* Grid Data */}
           <div className="border-2 flex items-center justify-center h-full">
-            <p className="text-sm pl-2">
+            <p className="font-semibold text-xs px-2">
               {billingPeriodStart.toLocaleDateString("en-US")} -{" "}
               {billingPeriodEnd.toLocaleDateString("en-US")}
             </p>
           </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            <p className="font-semibold text-xs px-2">{waterAmount}</p>
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            {waterTax.toFixed(2)}
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            {SCF}
+          </div>
+          <div className="border-2 flex items-center justify-center h-full">
+            {seniorDiscount}
+          </div>
+          <div className="border-2 flex items-center justify-center h-full"></div>
+          <div className="border-2 flex items-center justify-center h-full"></div>
+          <div className="border-2 flex items-center justify-center h-full"></div>
         </div>
 
         <div className="breakdown-container grid grid-cols-4 col-span-10 auto-rows-[50px] border-2">
