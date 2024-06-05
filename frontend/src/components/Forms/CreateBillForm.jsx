@@ -39,8 +39,10 @@ const CreateBillForm = () => {
 
   return (
     <div className="flex flex-col items-center ">
-      <h2 className="font-bold text-lg">Create Bill</h2>
-      <form onSubmit={createBill}>
+      <div className="flex flex-col items-center m-2">
+        <h2 className="font-bold text-lg">Create Bill</h2>
+      </div>
+      <form className="bg-gray-50" onSubmit={createBill}>
         <label htmlFor="accountHolder">Account Holder: </label>
         <br />
         <input
@@ -119,7 +121,7 @@ const CreateBillForm = () => {
         ></input>
 
         <br />
-        <input type="submit" value="Submit" />
+        <input className="font-bold" type="submit" value="CREATE" />
       </form>
     </div>
   );
