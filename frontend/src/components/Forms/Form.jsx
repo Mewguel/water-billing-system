@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
 
 import "../../styles/Form.css";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/logo.png";
 
 import LoadingIndicator from "../LoadingIndicator";
 
