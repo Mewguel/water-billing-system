@@ -21,7 +21,7 @@ const Bill = ({ bill, onDelete }) => {
   const amountDue = 0.0; //TODO:: amountDue
 
   return (
-    <div className="bill-container w-4/5 mx-auto">
+    <div className="bill-container w-4/5 mx-auto ">
       <div className="grid grid-cols-10">
         <div className="account-info-container grid grid-rows-2 col-span-3 border-2">
           <p className="font-bold text-2xl border-2 pl-2">
