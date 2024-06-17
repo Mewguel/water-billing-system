@@ -1,8 +1,11 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import QRCode from "../assets/QRPayment.png";
 
 const PaymentCard = ({ amount }) => {
+  const navigate = useNavigate();
+
   const [file, setFile] = useState(null);
   const [isFileValid, setIsFileValid] = useState(false);
 
@@ -25,6 +28,7 @@ const PaymentCard = ({ amount }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert("Receipt Submitted!");
+    navigate("/paymentsuccess");
   };
 
   amount = 500;
