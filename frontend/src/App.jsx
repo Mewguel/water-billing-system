@@ -10,11 +10,13 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import ManageUser from "./pages/Admin/ManageUser";
 
 // components
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ManageBills from "./pages/Admin/ManageBills";
 
 const Logout = () => {
   localStorage.clear();
@@ -47,6 +49,11 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+
+          {/* Admin Protected Routes */}
+          <Route path="/manageuser" element={<ManageUser />} />
+          <Route path="/managebills" element={<ManageBills />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
