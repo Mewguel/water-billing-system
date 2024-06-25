@@ -25,16 +25,28 @@ const Form = ({ route, method }) => {
     e.preventDefault();
 
     try {
-      const res = await api.post(route, { username, password });
       if (method === "login") {
+        const res = await api.post(route, { email, password });
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
         navigate("/");
       } else {
-        navigate("/login");
+        const res = await api.post(route, {
+          username,
+          password,
+          email,
+          firstname: firstName,
+          lastname: lastName,
+          address,
+        });
+        if (res.status === 201) {
+          navigate("/login");
+        } else {
+          alert("Registration failed!");
+        }
       }
     } catch (error) {
-      alert(error);
+      alert(error.response ? error.response.data : error.message);
     } finally {
       setLoading(false);
     }
@@ -45,12 +57,12 @@ const Form = ({ route, method }) => {
       <>
         <input
           className="form-input"
-          type="text"
-          value={username}
+          type="email"
+          value={email}
           onChange={(e) => {
-            setUsername(e.target.value);
+            setEmail(e.target.value);
           }}
-          placeholder="Username"
+          placeholder="Email"
         />
         <input
           className="form-input"
