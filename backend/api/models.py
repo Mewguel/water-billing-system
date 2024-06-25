@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
+
+from custom_user.models import User
 
 
 class Bill(models.Model):
@@ -15,7 +16,8 @@ class Bill(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               related_name="bills")
+                               related_name="bills",
+                               default=1)
 
     def __str__(self) -> str:
-        return self.title
+        return self.account_holder
