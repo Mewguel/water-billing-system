@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, BillSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from custom_user.models import User
 from .models import Bill
+
+from .serializers import UserSerializer, BillSerializer
 
 
 # Create your views here.
