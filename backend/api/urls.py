@@ -6,4 +6,7 @@ urlpatterns = [
     path("bills/delete/<int:pk>",
          views.BillDelete.as_view(),
          name="delete-bill"),
+    path("activate/<str:uidb64>/<str:token>/",
+         views.activate,
+         name="activate"),
 ]
