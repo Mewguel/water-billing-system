@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useLocation } from "react-router-dom";
+import { ACCESS_TOKEN } from "../constants";
 
 import Logo from "../assets/logo.png";
 
@@ -8,6 +9,7 @@ const Navbar = () => {
   const { logout } = useAuth();
   const location = useLocation();
   const [currentPath, setCurrentPath] = useState(location.pathname);
+  const access = localStorage.getItem(ACCESS_TOKEN);
 
   useEffect(() => {
     setCurrentPath(location.pathname);
@@ -22,7 +24,7 @@ const Navbar = () => {
           </a>
         </div>
         <div className="hidden md:block">
-          {currentPath === "/" ? (
+          {access !== null ? (
             <ul className="flex items-center space-x-8">
               <li>
                 <a href="/" className="text-white">
@@ -30,12 +32,17 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a href="/view-bills" className="text-white">
+                <a href="/profile" className="text-white">
+                  Profile
+                </a>
+              </li>
+              <li>
+                <a href="/managebills" className="text-white">
                   View Bills
                 </a>
               </li>
               <li>
-                <a href="/pay-bills" className="text-white">
+                <a href="/managebills" className="text-white">
                   Pay Bills
                 </a>
               </li>

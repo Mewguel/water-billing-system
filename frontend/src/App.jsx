@@ -46,13 +46,48 @@ const App = () => {
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisterAndLogout />} />
           {/* TODO: Shoud be protectedRoutes */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/paymentsuccess"
+            element={
+              <ProtectedRoute>
+                <PaymentSuccess />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Admin Protected Routes */}
-          <Route path="/manageuser" element={<ManageUser />} />
-          <Route path="/managebills" element={<ManageBills />} />
+          <Route
+            path="/manageuser"
+            element={
+              <ProtectedRoute>
+                <ManageUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/managebills"
+            element={
+              <ProtectedRoute>
+                <ManageBills />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

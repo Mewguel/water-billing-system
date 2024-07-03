@@ -1,15 +1,18 @@
 import os
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 # from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.db import transaction
 from django.core.exceptions import ValidationError
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -97,7 +100,7 @@ class BillDelete(generics.DestroyAPIView):
 
 def activate(request, uidb64, token):
     User = get_user_model()
-    current_site = get_current_site(request)
+    current_site = get_current_site(request).domain
 
     frontend_port = os.getenv('PORT', '5173')
     frontend_url = f"{current_site}:{frontend_port}"
@@ -112,10 +115,21 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
 
-        login(request, user)  # TODO: check if we can remove this
+        # login(request, user)  # TODO: check if we can remove this
 
         messages.success(request, "Your account has been activated!")
         return redirect(reverse(f"{frontend_url}/login"))
     else:
         messages.error(request, "Expired or Invalid Activation Link")
         return redirect(reverse("index"))
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_admin_status(request):
+    user_info = {
+        'is_admin': request.user.is_staff,
+        'username': request.user.username,
+        'email': request.user.email,
+    }
+    return Response(user_info)

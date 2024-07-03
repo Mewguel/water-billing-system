@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
+import api from "../../api";
 
 // TEST ONLY DELETE LATER
 const bills = [
@@ -37,7 +38,7 @@ const bills = [
   },
 ];
 
-const billColumns = [
+const billColumns = (isAdmin) => [
   { header: "ID", accessor: "id" },
   { header: "Account Holder", accessor: "AccountHolder" },
   { header: "Account Number", accessor: "AccountNumber" },
@@ -61,26 +62,45 @@ const billColumns = [
     accessor: "actions",
     render: () => (
       <>
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
+        {isAdmin && (
+          <>
+            <button
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
               font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 
               dark:bg-blue-600 dark:hover:bg-blue-700
               focus:outline-none dark:focus:ring-blue-800"
-        >
-          Mark Paid
-        </button>
-        <button
-          type="button"
-          className="focus:outline-none rounded-lg
+            >
+              Mark Paid
+            </button>
+            <button
+              type="button"
+              className="focus:outline-none rounded-lg
               text-white bg-red-700 hover:bg-red-800
               dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900
               focus:ring-4 focus:ring-red-300 
               font-medium text-sm 
               px-5 py-2.5 me-2 mb-2"
-        >
-          Reject
-        </button>
+            >
+              Reject
+            </button>
+          </>
+        )}
+        {!isAdmin && (
+          <>
+            <button
+              type="button"
+              className="focus:outline-none rounded-lg
+                text-white bg-green-700 hover:bg-green-800
+                dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900
+                focus:ring-4 focus:ring-green-300 
+                font-medium text-sm 
+                px-5 py-2.5 me-2 mb-2"
+            >
+              Pay
+            </button>
+          </>
+        )}
       </>
     ),
   },
@@ -88,9 +108,20 @@ const billColumns = [
 
 const ManageBills = () => {
   const [billData, setBillData] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setBillData(bills);
+
+    // Fetch admin status from the backend
+    api
+      .get("/api/check-admin-status/")
+      .then((response) => {
+        setIsAdmin(response.data.is_admin);
+      })
+      .catch((error) => {
+        console.error("There was an error checking the admin status!", error);
+      });
   }, []);
 
   return (
@@ -98,7 +129,7 @@ const ManageBills = () => {
       <div className="flex justify-center items-center w-full py-5">
         <h1 className="text-xl sm:text-2xl font-medium mb-2">Manage Bills</h1>
       </div>
-      <Table data={billData} columns={billColumns} />
+      <Table data={billData} columns={billColumns(isAdmin)} />
     </>
   );
 };

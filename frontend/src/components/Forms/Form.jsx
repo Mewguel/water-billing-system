@@ -29,7 +29,7 @@ const Form = ({ route, method }) => {
         const res = await api.post(route, { email, password });
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/");
+        navigate("/profile");
       } else {
         const res = await api.post(route, {
           username,
@@ -46,7 +46,8 @@ const Form = ({ route, method }) => {
         }
       }
     } catch (error) {
-      alert(error.response ? error.response.data : error.message);
+      alert(error.response ? error.response.data.detail : error.statusText);
+      console.log(error.response);
     } finally {
       setLoading(false);
     }
