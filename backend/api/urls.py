@@ -21,4 +21,7 @@ urlpatterns = [
     path('check-admin-status/',
          views.check_admin_status,
          name='check_admin_status'),
+    path('user/profile/',
+         views.UserProfileView.as_view(),
+         name='user-profile'),
 ]
