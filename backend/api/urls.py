@@ -9,4 +9,7 @@ urlpatterns = [
     path("activate/<str:uidb64>/<str:token>/",
          views.activate,
          name="activate"),
+    path('check-admin-status/',
+         views.check_admin_status,
+         name='check_admin_status'),
 ]
