@@ -16,7 +16,6 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework import status
 from rest_framework.exceptions import APIException, NotFound
 
 from custom_user.models import User
@@ -75,6 +74,14 @@ class CreateUserView(generics.CreateAPIView):
         to_email = user.email
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.send()
+
+
+class UserProfileView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 
 class BillListCreate(generics.ListCreateAPIView):
