@@ -31,16 +31,39 @@ class UserSerializer(serializers.ModelSerializer):
 class BillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bill
-        fields = ["id",  # Billing Statemeng No.
-                  "account_holder",
-                  "account_number",
-                  "customer_address",
-                  "prev_reading",
-                  "current_reading",
-                  "period_start",
-                  "period_end",
-                  "penalty",
-                  "created_at",
-                  "author",
-                  ]
+        fields = [
+            "id",
+            "account_holder",
+            "account_number",
+            "customer_address",
+            "prev_reading",
+            "current_reading",
+            "period_start",
+            "period_end",
+            "penalty",
+            "created_at",
+            "author",
+            "receipt",
+        ]
         extra_kwargs = {"author": {"read_only": True}}
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+
+
+class BillReceiptUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bill
+        fields = ["receipt", "account_holder"]
+
+    def update(self, instance, validated_data):
+        if instance.account_holder != validated_data.get('account_holder'):
+            error = "Account holder name does not match."
+            raise serializers.ValidationError(f"{error}")
+
+        instance.receipt = validated_data.get('receipt', instance.receipt)
+        instance.save()
+        return instance

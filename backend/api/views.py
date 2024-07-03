@@ -16,11 +16,14 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import status
+from rest_framework.exceptions import APIException, NotFound
 
 from custom_user.models import User
 from .models import Bill
 
 from .serializers import UserSerializer, BillSerializer
+from .serializers import BillReceiptUpdateSerializer
 # from backend.forms import RegistrationForm
 from backend.tokens import account_activation_token
 
@@ -89,6 +92,15 @@ class BillListCreate(generics.ListCreateAPIView):
             print(serializer.errors)
 
 
+class BillUpdate(generics.UpdateAPIView):
+    serializer_class = BillSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Bill.objects.filter(author=user)
+
+
 class BillDelete(generics.DestroyAPIView):
     serializer_class = BillSerializer
     permission_classes = [IsAuthenticated]
@@ -96,6 +108,51 @@ class BillDelete(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Bill.objects.filter(author=user)
+
+
+class BillReceiptUpdate(generics.UpdateAPIView):
+    serializer_class = BillReceiptUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Bill.objects.filter(author=user)
+
+    def get_object(self):
+        billid = self.kwargs['pk']
+        try:
+            bill = Bill.objects.get(pk=billid, author=self.request.user)
+            return bill
+        except Bill.DoesNotExist:
+            raise NotFound("Bill not found.")
+        except Exception as e:
+            raise APIException(f"Error: {str(e)}")
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance,
+                                         data=request.data,
+                                         partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+
+class BillDetail(generics.RetrieveAPIView):
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        bill_id = self.kwargs.get('pk')
+        try:
+            bill = Bill.objects.get(pk=bill_id, author=self.request.user)
+            return bill
+        except Bill.DoesNotExist:
+            raise NotFound("Bill not found.")
+        except Exception as e:
+            raise APIException(f"Error: {str(e)}")
 
 
 def activate(request, uidb64, token):

@@ -18,6 +18,7 @@ class Bill(models.Model):
                                on_delete=models.CASCADE,
                                related_name="bills",
                                default=1)
+    receipt = models.FileField(upload_to='receipts/', blank=True, null=True)
 
     def __str__(self) -> str:
         return self.account_holder
