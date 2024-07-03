@@ -1,13 +1,36 @@
-import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import QRCode from "../assets/QRPayment.png";
+import api from "../api.js";
 
-const PaymentCard = ({ amount }) => {
+const PaymentCard = ({ amount, billId }) => {
   const navigate = useNavigate();
 
+  const [accountHolder, setAccountHolder] = useState("");
   const [file, setFile] = useState(null);
   const [isFileValid, setIsFileValid] = useState(false);
+
+  useEffect(() => {
+    console.log(billId);
+    // Replace with appropriate logic to fetch bill details based on billId
+    const fetchBill = async () => {
+      try {
+        const response = await api.get(`api/bills/${billId}/`);
+        if (response.data) {
+          setAccountHolder(response.data.account_holder);
+        } else {
+          console.error("Bill not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching bill:", error);
+      }
+    };
+
+    // Fetch bill details when billId changes
+    if (billId) {
+      fetchBill();
+    }
+  }, [billId]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -25,10 +48,35 @@ const PaymentCard = ({ amount }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Receipt Submitted!");
-    navigate("/paymentsuccess");
+
+    if (!file) {
+      alert("Please upload a receipt.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("receipt", file);
+    formData.append("account_holder", accountHolder);
+
+    try {
+      const response = await api.patch(
+        `api/bills/${billId}/update-receipt/`,
+        formData
+      );
+
+      if (response.status === 200 || response.status === 204) {
+        alert("Receipt Submitted!");
+        navigate("/paymentsuccess");
+      } else {
+        console.error("Error submitting receipt:", response);
+        alert("Error submitting receipt. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting receipt:", error);
+      alert("Error submitting receipt. Please try again.");
+    }
   };
 
   amount = 500;
