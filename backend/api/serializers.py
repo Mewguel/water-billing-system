@@ -44,6 +44,7 @@ class BillSerializer(serializers.ModelSerializer):
             "created_at",
             "author",
             "receipt",
+            "status",
         ]
         extra_kwargs = {"author": {"read_only": True}}
 

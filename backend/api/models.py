@@ -19,6 +19,7 @@ class Bill(models.Model):
                                related_name="bills",
                                default=1)
     receipt = models.FileField(upload_to='receipts/', blank=True, null=True)
+    status = models.CharField(max_length=10, default="Unpaid")
 
     def __str__(self) -> str:
         return self.account_holder
